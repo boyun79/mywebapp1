@@ -1,26 +1,25 @@
 import streamlit as st
-import random
 
-# ==========================================
+# -----------------------------
 # 페이지 설정
-# ==========================================
+# -----------------------------
 st.set_page_config(
     page_title="MBTI 최애 찾기 💗",
     page_icon="🎀",
     layout="centered"
 )
 
-# ==========================================
-# K-POP 추천 데이터
-# ==========================================
+# -----------------------------
+# 추천 데이터
+# -----------------------------
 recommendations = {
     "ISTJ": {
         "idol": "RM",
         "group": "BTS",
-        "emoji": "📚",
+        "emoji": "🐨",
         "title": "차분하고 똑똑한 매력에 끌리는 당신",
-        "message": "논리적이고 계획적인 ISTJ에게는 깊이 있는 생각과 차분한 매력이 돋보이는 RM을 추천해요!",
-        "keywords": ["🧠 지적인 매력", "📖 깊은 생각", "🎨 예술 감성"]
+        "message": "논리적이고 계획적인 ISTJ에게는 깊이 있는 생각과 차분한 매력이 잘 어울려요!",
+        "keywords": ["🧠 지적인 매력", "📚 깊은 생각", "🎨 예술 감성"]
     },
     "ISFJ": {
         "idol": "진",
@@ -41,7 +40,7 @@ recommendations = {
     "INTJ": {
         "idol": "카리나",
         "group": "aespa",
-        "emoji": "🖤",
+        "emoji": "✨",
         "title": "완벽하고 멋진 매력에 끌리는 당신",
         "message": "자신만의 목표가 뚜렷한 INTJ에게는 카리스마와 프로페셔널함이 돋보이는 카리나를 추천해요!",
         "keywords": ["✨ 카리스마", "🎯 프로페셔널", "👑 리더십"]
@@ -83,7 +82,7 @@ recommendations = {
         "group": "BLACKPINK",
         "emoji": "🐱",
         "title": "강렬하고 자신감 넘치는 매력에 끌리는 당신",
-        "message": "에너지 넘치는 ESTP에게는 무대에서 강렬한 존재감을 보여주는 리사가 찰떡이에요!",
+        "message": "에너지 넘치는 ESTP에게는 무대에서 강렬한 존재감을 보여주는 리사가 잘 어울려요!",
         "keywords": ["🔥 카리스마", "💃 퍼포먼스", "✨ 자신감"]
     },
     "ESFP": {
@@ -144,105 +143,89 @@ recommendations = {
     }
 }
 
-# ==========================================
-# CSS
-# ==========================================
+# -----------------------------
+# 디자인
+# -----------------------------
 st.markdown("""
 <style>
 
 .stApp {
-    background: linear-gradient(
-        180deg,
-        #fff5fa 0%,
-        #f8f5ff 50%,
-        #fffafa 100%
-    );
+    background: linear-gradient(180deg, #fff5fa, #f8f5ff);
 }
 
-.main-title {
+.title {
     text-align: center;
-    font-size: 48px;
+    font-size: 46px;
     font-weight: 900;
     color: #ff6b9a;
-    margin-top: 20px;
-    margin-bottom: 5px;
+    margin-top: 25px;
 }
 
 .subtitle {
     text-align: center;
     font-size: 18px;
-    color: #888888;
+    color: #888;
     margin-bottom: 35px;
 }
 
-.ribbon {
-    text-align: center;
-    font-size: 35px;
-    margin-bottom: 5px;
-}
-
-.select-box {
+.box {
     background: white;
-    padding: 25px;
+    padding: 28px;
     border-radius: 25px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-    margin-bottom: 20px;
 }
 
-.result-card {
+.result {
     background: white;
     padding: 35px;
     border-radius: 30px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     text-align: center;
+    border: 2px solid #ffdce8;
     margin-top: 25px;
-    border: 2px solid #ffe0eb;
 }
 
-.result-emoji {
+.emoji {
     font-size: 70px;
 }
 
-.result-idol {
+.idol {
     font-size: 40px;
     font-weight: 900;
     color: #ff5f91;
-    margin: 5px;
 }
 
-.result-group {
+.group {
+    color: #999;
     font-size: 18px;
-    color: #999999;
 }
 
 .result-title {
+    color: #555;
     font-size: 22px;
-    font-weight: 700;
-    color: #555555;
-    margin-top: 15px;
+    font-weight: bold;
+    margin-top: 18px;
 }
 
 .message {
+    color: #777;
     font-size: 16px;
     line-height: 1.8;
-    color: #777777;
     margin: 15px;
 }
 
 .keyword {
     background: #fff0f5;
     border-radius: 15px;
-    padding: 10px;
-    margin: 6px;
-    font-size: 15px;
+    padding: 12px;
+    margin-top: 8px;
+    text-align: center;
 }
 
 .footer {
     text-align: center;
-    color: #bbbbbb;
-    font-size: 13px;
-    margin-top: 45px;
-    margin-bottom: 20px;
+    color: #bbb;
+    margin-top: 40px;
 }
 
 div.stButton > button {
@@ -251,8 +234,7 @@ div.stButton > button {
     background: #ff82aa;
     color: white;
     font-size: 18px;
-    font-weight: 700;
-    padding: 12px;
+    font-weight: bold;
 }
 
 div.stButton > button:hover {
@@ -263,13 +245,11 @@ div.stButton > button:hover {
 </style>
 """, unsafe_allow_html=True)
 
-# ==========================================
+# -----------------------------
 # 제목
-# ==========================================
-st.markdown('<div class="ribbon">🎀 ✨ 🎀</div>', unsafe_allow_html=True)
-
+# -----------------------------
 st.markdown(
-    '<div class="main-title">💗 MBTI 최애 찾기 💗</div>',
+    '<div class="title">🎀 MBTI 최애 찾기 💗</div>',
     unsafe_allow_html=True
 )
 
@@ -278,25 +258,26 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# ==========================================
+# -----------------------------
 # MBTI 선택
-# ==========================================
-st.markdown('<div class="select-box">', unsafe_allow_html=True)
+# -----------------------------
+st.markdown('<div class="box">', unsafe_allow_html=True)
 
-st.markdown("### 🌸 먼저 MBTI를 골라주세요!")
+st.markdown("### 🌸 나의 MBTI를 골라주세요!")
 
 mbti = st.selectbox(
-    "나의 MBTI",
+    "MBTI",
     list(recommendations.keys()),
     index=None,
-    placeholder="💌 MBTI를 선택해주세요!"
+    placeholder="💌 MBTI를 선택해주세요!",
+    label_visibility="collapsed"
 )
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ==========================================
-# 추천
-# ==========================================
+# -----------------------------
+# 결과
+# -----------------------------
 if mbti:
 
     if st.button("🎀 내 최애 찾기 💗", use_container_width=True):
@@ -305,19 +286,21 @@ if mbti:
 
         st.balloons()
 
+        # ⭐ 중요: HTML을 화면에 표시하도록
+        # unsafe_allow_html=True를 반드시 넣습니다.
         st.markdown(
             f"""
-            <div class="result-card">
+            <div class="result">
 
-                <div class="result-emoji">
+                <div class="emoji">
                     {result["emoji"]}
                 </div>
 
-                <div class="result-idol">
+                <div class="idol">
                     {result["idol"]}
                 </div>
 
-                <div class="result-group">
+                <div class="group">
                     {result["group"]}
                 </div>
 
@@ -340,10 +323,13 @@ if mbti:
             unsafe_allow_html=True
         )
 
-        # 키워드
         for keyword in result["keywords"]:
             st.markdown(
-                f'<div class="keyword">{keyword}</div>',
+                f"""
+                <div class="keyword">
+                    {keyword}
+                </div>
+                """,
                 unsafe_allow_html=True
             )
 
@@ -362,10 +348,10 @@ if mbti:
             unsafe_allow_html=True
         )
 
-# ==========================================
-# Footer
-# ==========================================
+# -----------------------------
+# 하단
+# -----------------------------
 st.markdown(
-    '<div class="footer">Made with 💕 and a little bit of K-POP magic 🎤✨</div>',
+    '<div class="footer">Made with 💕 and K-POP magic 🎤✨</div>',
     unsafe_allow_html=True
 )
