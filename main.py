@@ -1,296 +1,371 @@
 import streamlit as st
+import random
 
-# -----------------------------
+# ==========================================
 # 페이지 설정
-# -----------------------------
+# ==========================================
 st.set_page_config(
-    page_title="MBTI 여행친구 ✈️",
-    page_icon="🌷",
+    page_title="MBTI 최애 찾기 💗",
+    page_icon="🎀",
     layout="centered"
 )
 
-# -----------------------------
-# 여행지 데이터
-# -----------------------------
-travel_data = {
+# ==========================================
+# K-POP 추천 데이터
+# ==========================================
+recommendations = {
     "ISTJ": {
-        "title": "차분하고 알찬 여행을 좋아하는 당신 💼",
-        "place": "🇯🇵 교토, 일본",
-        "description": "계획을 세우고 하나씩 구경하는 여행이 잘 어울려요. 전통 거리와 아름다운 사찰을 천천히 둘러보세요!",
-        "spots": ["⛩️ 후시미이나리", "🌸 기온 거리", "🍵 아라시야마"],
-        "color": "#E8F5E9"
+        "idol": "RM",
+        "group": "BTS",
+        "emoji": "📚",
+        "title": "차분하고 똑똑한 매력에 끌리는 당신",
+        "message": "논리적이고 계획적인 ISTJ에게는 깊이 있는 생각과 차분한 매력이 돋보이는 RM을 추천해요!",
+        "keywords": ["🧠 지적인 매력", "📖 깊은 생각", "🎨 예술 감성"]
     },
     "ISFJ": {
-        "title": "따뜻하고 편안한 여행을 좋아하는 당신 🧸",
-        "place": "🇯🇵 후쿠오카, 일본",
-        "description": "맛있는 음식과 여유로운 산책을 즐길 수 있는 후쿠오카가 잘 어울려요. 부담 없이 힐링해보세요!",
-        "spots": ["🍜 하카타 라멘", "🌊 모모치 해변", "🌿 오호리 공원"],
-        "color": "#FFF3E0"
+        "idol": "진",
+        "group": "BTS",
+        "emoji": "🐹",
+        "title": "따뜻하고 다정한 사람이 좋은 당신",
+        "message": "배려심 많고 따뜻한 ISFJ에게는 유쾌하면서도 다정한 진의 매력이 잘 어울려요!",
+        "keywords": ["💕 다정함", "🍳 요리", "😂 유쾌함"]
     },
     "INFJ": {
-        "title": "감성과 의미를 찾아 떠나는 당신 🌙",
-        "place": "🇫🇷 파리, 프랑스",
-        "description": "예술과 낭만, 조용한 골목길을 좋아한다면 파리가 딱이에요. 카페에서 여유롭게 시간을 보내보세요.",
-        "spots": ["🗼 에펠탑", "🎨 루브르 박물관", "☕ 몽마르트르"],
-        "color": "#F3E5F5"
+        "idol": "우지",
+        "group": "SEVENTEEN",
+        "emoji": "🍚",
+        "title": "섬세한 감성을 사랑하는 당신",
+        "message": "섬세하고 깊이 있는 INFJ에게는 음악에 진심인 우지의 감성이 찰떡이에요!",
+        "keywords": ["🎵 음악", "🌙 섬세함", "💭 감성"]
     },
     "INTJ": {
-        "title": "새로운 세계를 탐험하는 전략가 🔭",
-        "place": "🇸🇬 싱가포르",
-        "description": "효율적인 도시 여행과 독특한 건축물을 좋아한다면 싱가포르를 추천해요!",
-        "spots": ["🌳 가든스 바이 더 베이", "🏙️ 마리나 베이", "🦁 센토사"],
-        "color": "#E3F2FD"
+        "idol": "카리나",
+        "group": "aespa",
+        "emoji": "🖤",
+        "title": "완벽하고 멋진 매력에 끌리는 당신",
+        "message": "자신만의 목표가 뚜렷한 INTJ에게는 카리스마와 프로페셔널함이 돋보이는 카리나를 추천해요!",
+        "keywords": ["✨ 카리스마", "🎯 프로페셔널", "👑 리더십"]
     },
     "ISTP": {
-        "title": "자유롭게 움직이는 모험가 🛵",
-        "place": "🇹🇭 치앙마이, 태국",
-        "description": "정해진 일정 없이 마음 가는 대로 돌아다니는 여행을 즐겨보세요!",
-        "spots": ["🏔️ 도이수텝", "☕ 감성 카페", "🌿 님만해민"],
-        "color": "#E0F7FA"
+        "idol": "한",
+        "group": "Stray Kids",
+        "emoji": "🐿️",
+        "title": "자유롭고 재치 있는 사람이 좋은 당신",
+        "message": "쿨하고 독립적인 ISTP에게는 다재다능하고 재치 넘치는 한이 잘 어울려요!",
+        "keywords": ["🎤 랩", "⚡ 재치", "🎸 다재다능"]
     },
     "ISFP": {
-        "title": "감성을 충전하는 예술가 🎨",
-        "place": "🇮🇹 피렌체, 이탈리아",
-        "description": "예쁜 골목과 맛있는 음식, 아름다운 예술 작품을 천천히 즐겨보세요.",
-        "spots": ["🎨 우피치 미술관", "🌉 베키오 다리", "🍕 피렌체 골목"],
-        "color": "#FCE4EC"
+        "idol": "정국",
+        "group": "BTS",
+        "emoji": "🐰",
+        "title": "자연스럽고 사랑스러운 매력에 끌리는 당신",
+        "message": "감각적이고 자유로운 ISFP에게는 부드러운 분위기와 다양한 재능을 가진 정국을 추천해요!",
+        "keywords": ["🎤 보컬", "🎨 감각", "🐰 사랑스러움"]
     },
     "INFP": {
-        "title": "동화 같은 여행을 꿈꾸는 당신 🧚",
-        "place": "🇨🇭 인터라켄, 스위스",
-        "description": "아름다운 자연 속에서 조용히 나만의 시간을 가져보세요. 동화 속에 들어온 기분이 들 거예요.",
-        "spots": ["🏔️ 융프라우", "🚞 산악열차", "🌿 호수 산책"],
-        "color": "#F1F8E9"
+        "idol": "아이유",
+        "group": "Solo",
+        "emoji": "🌷",
+        "title": "따뜻한 감성과 이야기를 사랑하는 당신",
+        "message": "상상력이 풍부한 INFP에게는 섬세한 음악과 따뜻한 이야기를 들려주는 아이유가 잘 어울려요!",
+        "keywords": ["🌷 감성", "🎼 음악", "📖 이야기"]
     },
     "INTP": {
-        "title": "호기심 가득한 탐험가 🔬",
-        "place": "🇩🇪 베를린, 독일",
-        "description": "역사와 과학, 독특한 문화가 공존하는 베를린에서 새로운 것을 발견해보세요!",
-        "spots": ["🏛️ 박물관섬", "🧱 베를린 장벽", "🎨 이스트 사이드 갤러리"],
-        "color": "#EDE7F6"
+        "idol": "태용",
+        "group": "NCT",
+        "emoji": "🐯",
+        "title": "독특하고 창의적인 매력을 좋아하는 당신",
+        "message": "호기심 많은 INTP에게는 독특한 스타일과 창의적인 매력을 가진 태용을 추천해요!",
+        "keywords": ["🎨 창의성", "🔥 퍼포먼스", "💡 독특함"]
     },
     "ESTP": {
-        "title": "신나게 즐기는 액티비티 마스터 🎢",
-        "place": "🇦🇺 골드코스트, 호주",
-        "description": "바다와 액티비티를 좋아한다면 골드코스트! 신나는 하루를 마음껏 즐겨보세요.",
-        "spots": ["🏄 서퍼스 파라다이스", "🎢 테마파크", "🌊 해변 드라이브"],
-        "color": "#FFF8E1"
+        "idol": "리사",
+        "group": "BLACKPINK",
+        "emoji": "🐱",
+        "title": "강렬하고 자신감 넘치는 매력에 끌리는 당신",
+        "message": "에너지 넘치는 ESTP에게는 무대에서 강렬한 존재감을 보여주는 리사가 찰떡이에요!",
+        "keywords": ["🔥 카리스마", "💃 퍼포먼스", "✨ 자신감"]
     },
     "ESFP": {
-        "title": "즐거움이 가득한 파티 여행자 🎉",
-        "place": "🇪🇸 바르셀로나, 스페인",
-        "description": "맛있는 음식과 예쁜 건축물, 활기찬 분위기를 모두 즐길 수 있는 도시예요!",
-        "spots": ["⛪ 사그라다 파밀리아", "🥘 타파스", "🏖️ 바르셀로네타"],
-        "color": "#FFEBEE"
+        "idol": "호시",
+        "group": "SEVENTEEN",
+        "emoji": "🐯",
+        "title": "신나고 에너지 넘치는 사람이 좋은 당신",
+        "message": "즐거움을 사랑하는 ESFP에게는 무대 위에서 에너지를 뿜어내는 호시를 추천해요!",
+        "keywords": ["🐯 에너지", "💃 춤", "🎉 흥"]
     },
     "ENFP": {
-        "title": "설렘을 찾아 떠나는 자유로운 영혼 🌈",
-        "place": "🇵🇹 리스본, 포르투갈",
-        "description": "예쁜 골목과 알록달록한 풍경을 따라 걷다 보면 새로운 재미를 계속 발견할 수 있어요!",
-        "spots": ["🚋 트램 28", "🌊 벨렝", "🍮 에그타르트"],
-        "color": "#FFF3E0"
+        "idol": "승관",
+        "group": "SEVENTEEN",
+        "emoji": "🍊",
+        "title": "밝고 사랑스러운 매력에 끌리는 당신",
+        "message": "긍정 에너지가 넘치는 ENFP에게는 밝고 유쾌한 승관이 정말 잘 어울려요!",
+        "keywords": ["🍊 밝음", "😂 예능감", "💕 따뜻함"]
     },
     "ENTP": {
-        "title": "새로운 경험을 찾아다니는 아이디어 뱅크 💡",
-        "place": "🇺🇸 뉴욕, 미국",
-        "description": "볼거리도 많고 매일 새로운 일이 벌어지는 뉴욕에서 마음껏 돌아다녀보세요!",
-        "spots": ["🗽 자유의 여신상", "🌳 센트럴파크", "🎭 브로드웨이"],
-        "color": "#E8EAF6"
+        "idol": "제시",
+        "group": "Solo",
+        "emoji": "🔥",
+        "title": "솔직하고 개성 있는 사람이 좋은 당신",
+        "message": "아이디어가 넘치는 ENTP에게는 자신만의 개성을 확실하게 보여주는 제시를 추천해요!",
+        "keywords": ["🔥 개성", "🎤 카리스마", "😂 솔직함"]
     },
     "ESTJ": {
-        "title": "알차게 정복하는 여행 리더 👑",
-        "place": "🇬🇧 런던, 영국",
-        "description": "유명 명소부터 맛집까지 알차게 돌아보는 여행을 즐겨보세요!",
-        "spots": ["🎡 런던아이", "🏰 타워 브리지", "☕ 애프터눈 티"],
-        "color": "#E3F2FD"
+        "idol": "수호",
+        "group": "EXO",
+        "emoji": "🐰",
+        "title": "책임감 있고 믿음직한 사람이 좋은 당신",
+        "message": "리더십이 강한 ESTJ에게는 책임감 있고 안정적인 매력을 가진 수호를 추천해요!",
+        "keywords": ["👑 리더십", "💙 책임감", "🎵 보컬"]
     },
     "ESFJ": {
-        "title": "함께라서 더 행복한 여행자 💕",
-        "place": "🇰🇷 제주도, 대한민국",
-        "description": "친구나 가족과 함께 맛있는 것도 먹고 예쁜 풍경도 보는 여행을 추천해요!",
-        "spots": ["🌊 협재해변", "🌸 유채꽃길", "🍊 제주 카페"],
-        "color": "#FFF0F5"
+        "idol": "도경수",
+        "group": "EXO",
+        "emoji": "🐧",
+        "title": "따뜻하고 편안한 매력을 좋아하는 당신",
+        "message": "사람을 좋아하고 정이 많은 ESFJ에게는 편안하고 따뜻한 도경수가 잘 어울려요!",
+        "keywords": ["🍳 요리", "🎬 연기", "💕 따뜻함"]
     },
     "ENFJ": {
-        "title": "사람과 추억을 사랑하는 여행자 🌷",
-        "place": "🇮🇹 로마, 이탈리아",
-        "description": "사람들과 함께 역사와 문화를 느끼고 맛있는 음식을 즐겨보세요!",
-        "spots": ["🏛️ 콜로세움", "⛲ 트레비 분수", "🍝 로마 맛집"],
-        "color": "#FCE4EC"
+        "idol": "방찬",
+        "group": "Stray Kids",
+        "emoji": "🐺",
+        "title": "사람을 이끄는 따뜻한 리더가 좋은 당신",
+        "message": "사람을 챙기고 응원하는 ENFJ에게는 따뜻한 리더십이 돋보이는 방찬을 추천해요!",
+        "keywords": ["🐺 리더십", "💕 배려", "🎤 음악"]
     },
     "ENTJ": {
-        "title": "세상을 누비는 당당한 리더 🚀",
-        "place": "🇦🇪 두바이, UAE",
-        "description": "화려한 도시와 새로운 경험을 좋아하는 당신에게 잘 어울리는 여행지예요!",
-        "spots": ["🏙️ 부르즈 할리파", "🏝️ 팜 주메이라", "🛍️ 두바이 몰"],
-        "color": "#E8EAF6"
+        "idol": "소연",
+        "group": "(G)I-DLE",
+        "emoji": "👑",
+        "title": "당당하고 카리스마 있는 사람이 좋은 당신",
+        "message": "목표를 향해 달려가는 ENTJ에게는 강한 리더십과 창작 능력을 보여주는 소연을 추천해요!",
+        "keywords": ["👑 리더", "✍️ 프로듀싱", "🔥 카리스마"]
     }
 }
 
-# -----------------------------
+# ==========================================
 # CSS
-# -----------------------------
+# ==========================================
 st.markdown("""
 <style>
-    .stApp {
-        background: linear-gradient(180deg, #FFF8FC 0%, #F7F9FF 100%);
-    }
 
-    .main-title {
-        text-align: center;
-        font-size: 46px;
-        font-weight: 800;
-        color: #FF6F91;
-        margin-bottom: 5px;
-    }
+.stApp {
+    background: linear-gradient(
+        180deg,
+        #fff5fa 0%,
+        #f8f5ff 50%,
+        #fffafa 100%
+    );
+}
 
-    .sub-title {
-        text-align: center;
-        font-size: 18px;
-        color: #777777;
-        margin-bottom: 35px;
-    }
+.main-title {
+    text-align: center;
+    font-size: 48px;
+    font-weight: 900;
+    color: #ff6b9a;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
 
-    .cute-box {
-        background: white;
-        padding: 30px;
-        border-radius: 25px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-        margin-bottom: 20px;
-    }
+.subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #888888;
+    margin-bottom: 35px;
+}
 
-    .result-title {
-        font-size: 25px;
-        font-weight: 700;
-        color: #555555;
-        margin-bottom: 8px;
-    }
+.ribbon {
+    text-align: center;
+    font-size: 35px;
+    margin-bottom: 5px;
+}
 
-    .destination {
-        font-size: 38px;
-        font-weight: 800;
-        color: #FF6F91;
-        margin: 10px 0;
-    }
+.select-box {
+    background: white;
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+}
 
-    .description {
-        font-size: 17px;
-        line-height: 1.7;
-        color: #666666;
-    }
+.result-card {
+    background: white;
+    padding: 35px;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    text-align: center;
+    margin-top: 25px;
+    border: 2px solid #ffe0eb;
+}
 
-    .spot {
-        background: rgba(255,255,255,0.75);
-        padding: 12px;
-        border-radius: 15px;
-        margin: 7px 0;
-        font-size: 16px;
-    }
+.result-emoji {
+    font-size: 70px;
+}
 
-    .footer {
-        text-align: center;
-        color: #AAAAAA;
-        margin-top: 40px;
-        font-size: 14px;
-    }
+.result-idol {
+    font-size: 40px;
+    font-weight: 900;
+    color: #ff5f91;
+    margin: 5px;
+}
 
-    div.stButton > button {
-        border-radius: 20px;
-        border: none;
-        background: #FF8FAB;
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        padding: 10px 25px;
-    }
+.result-group {
+    font-size: 18px;
+    color: #999999;
+}
 
-    div.stButton > button:hover {
-        background: #FF6F91;
-        color: white;
-    }
+.result-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #555555;
+    margin-top: 15px;
+}
+
+.message {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #777777;
+    margin: 15px;
+}
+
+.keyword {
+    background: #fff0f5;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 6px;
+    font-size: 15px;
+}
+
+.footer {
+    text-align: center;
+    color: #bbbbbb;
+    font-size: 13px;
+    margin-top: 45px;
+    margin-bottom: 20px;
+}
+
+div.stButton > button {
+    border-radius: 25px;
+    border: none;
+    background: #ff82aa;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 12px;
+}
+
+div.stButton > button:hover {
+    background: #ff5f91;
+    color: white;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
-# -----------------------------
+# ==========================================
 # 제목
-# -----------------------------
+# ==========================================
+st.markdown('<div class="ribbon">🎀 ✨ 🎀</div>', unsafe_allow_html=True)
+
 st.markdown(
-    '<div class="main-title">🌷 MBTI 여행친구 ✈️</div>',
+    '<div class="main-title">💗 MBTI 최애 찾기 💗</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="sub-title">나와 찰떡궁합인 여행지를 찾아볼까요? 🧳💕</div>',
+    '<div class="subtitle">나와 찰떡궁합인 K-POP 최애를 찾아보자! 🎤✨</div>',
     unsafe_allow_html=True
 )
 
-# -----------------------------
+# ==========================================
 # MBTI 선택
-# -----------------------------
-st.markdown(
-    '<div class="cute-box">',
-    unsafe_allow_html=True
-)
+# ==========================================
+st.markdown('<div class="select-box">', unsafe_allow_html=True)
+
+st.markdown("### 🌸 먼저 MBTI를 골라주세요!")
 
 mbti = st.selectbox(
-    "💌 나의 MBTI를 골라주세요!",
-    list(travel_data.keys()),
+    "나의 MBTI",
+    list(recommendations.keys()),
     index=None,
-    placeholder="MBTI를 선택해주세요 🌸"
+    placeholder="💌 MBTI를 선택해주세요!"
 )
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-# -----------------------------
-# 추천 버튼
-# -----------------------------
+# ==========================================
+# 추천
+# ==========================================
 if mbti:
-    if st.button("💖 여행지 추천받기!", use_container_width=True):
 
-        data = travel_data[mbti]
+    if st.button("🎀 내 최애 찾기 💗", use_container_width=True):
+
+        result = recommendations[mbti]
 
         st.balloons()
 
         st.markdown(
             f"""
-            <div class="cute-box" style="background:{data['color']}">
-                <div class="result-title">{data['title']}</div>
-                <div class="destination">{data['place']}</div>
-                <div class="description">
-                    {data['description']}
-                </div>
-                <br>
-                <b>✨ 이런 곳을 가보세요!</b>
-            """,
-            unsafe_allow_html=True
-        )
+            <div class="result-card">
 
-        for spot in data["spots"]:
-            st.markdown(
-                f'<div class="spot">{spot}</div>',
-                unsafe_allow_html=True
-            )
-
-        st.markdown("</div>", unsafe_allow_html=True)
-
-        st.markdown(
-            f"""
-            <div class="cute-box">
-                <div style="text-align:center; font-size:20px;">
-                    🌸 <b>{mbti}</b> 여행자의 행복한 여행을 응원해요! 🌸
+                <div class="result-emoji">
+                    {result["emoji"]}
                 </div>
-                <div style="text-align:center; margin-top:10px; color:#888;">
-                    좋은 여행은 좋은 추억이 됩니다 💕
+
+                <div class="result-idol">
+                    {result["idol"]}
                 </div>
+
+                <div class="result-group">
+                    {result["group"]}
+                </div>
+
+                <div class="result-title">
+                    {result["title"]}
+                </div>
+
+                <div class="message">
+                    {result["message"]}
+                </div>
+
+                <hr>
+
+                <div style="font-size:18px; font-weight:bold; color:#666;">
+                    ✨ 이런 매력에 빠질 거예요! ✨
+                </div>
+
             </div>
             """,
             unsafe_allow_html=True
         )
 
-# -----------------------------
-# 하단
-# -----------------------------
+        # 키워드
+        for keyword in result["keywords"]:
+            st.markdown(
+                f'<div class="keyword">{keyword}</div>',
+                unsafe_allow_html=True
+            )
+
+        st.markdown(
+            f"""
+            <div style="
+                text-align:center;
+                margin-top:25px;
+                color:#ff7da5;
+                font-size:18px;
+                font-weight:bold;
+            ">
+                💕 {mbti}인 당신의 새로운 최애를 응원해요! 💕
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+# ==========================================
+# Footer
+# ==========================================
 st.markdown(
-    '<div class="footer">Made with 💕 for happy travelers ✈️🌷</div>',
+    '<div class="footer">Made with 💕 and a little bit of K-POP magic 🎤✨</div>',
     unsafe_allow_html=True
 )
